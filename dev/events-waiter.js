@@ -44,7 +44,7 @@ function EventsWaiter(){
  * @returns {undefined}
  */
 EventsWaiter.prototype.addEvent = function(event){
-    if (typeof(event) != "string") throw new Error('The parameter event must be a string');
+    if (typeof(event) != "string") throw new Error("The option 'event' should be a string.");
     
     this._events.push(event);
 };
@@ -55,7 +55,7 @@ EventsWaiter.prototype.addEvent = function(event){
  * @returns {undefined}
  */
 EventsWaiter.prototype.removeEvent = function(event){
-    if (typeof(event) != "string") throw new Error('The parameter event must be a string');
+    if (typeof(event) != "string") throw new Error("The option 'event' should be a string.");
     
     for (var i=0; i<this._events.length; i++){
         if (this._events[i] == event){
@@ -70,7 +70,7 @@ EventsWaiter.prototype.removeEvent = function(event){
  * @returns {undefined}
  */
 EventsWaiter.prototype.completeEvent = function(event){
-    if (typeof(event) != "string") throw new Error('The parameter event must be a string');
+    if (typeof(event) != "string") throw new Error("The option 'event' should be a string.");
     
     this.removeEvent(event);
     this._tryToComplete();
@@ -82,7 +82,7 @@ EventsWaiter.prototype.completeEvent = function(event){
  * @returns {undefined}
  */
 EventsWaiter.prototype.wait = function(callback){
-    if (!(callback instanceof Function)) throw new Error('The parameter callback must be a function');
+    if (!(callback instanceof Function)) throw new Error("The option 'callback' should be a function.");
     
     this._callback = callback;
     this._waitingStarted = true;
@@ -116,8 +116,9 @@ EventsWaiter.prototype.reset = function(){
 EventsWaiter.prototype._tryToComplete = function(){
 	if (this._waitingStarted){
 	    if (this._areEventsCompleted()){
+	        var callback = this._callback;
 	        this.dontWait();
-	        this._callback()
+	        callback();
 	    };
 	};
 };
@@ -131,28 +132,3 @@ EventsWaiter.prototype._areEventsCompleted = function(){
     if (this._events.length == 0) return true;
     return false;
 };
-
-/*
-EventsWaiter
-    If the method *#wait()* has called before all events are called:
-        Should not call the callback if all events is not complete.
-        Should call the callback when last event is completed.
-        Should not call the callback if the method *#completeEvent()* is called again.
-        
-    If the method *#wait()* has called after all events are called:
-        Should not call the callback if all events is not complete.
-        Should not call the callback when last event is completed.
-        Should call the callback if the method *#wait()* is called.
-        Should not call the callback if the method *#completeEvent()* is called again.
-        
-    If the methods *#wait()* and *#dontWait()* are called before all evenrs are called 
-        Should not call the callback if all events is not complete.
-        Should not call the callback when last event is completed.
-        Should not call the callback if the method *#completeEvent()* is called again.
-        
-    #reset()
-        The member *#_events* should be an empty array.
-        The member *#_callback* should be null.
-        The member *#_waitingStarted* should be equal to *true*.
-        
-*/
