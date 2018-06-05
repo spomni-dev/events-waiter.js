@@ -131,28 +131,3 @@ EventsWaiter.prototype._areEventsCompleted = function(){
     if (this._events.length == 0) return true;
     return false;
 };
-
-/*
-EventsWaiter
-    If the method *#wait()* has called before all events are called:
-        Should not call the callback if all events is not complete.
-        Should call the callback when last event is completed.
-        Should not call the callback if the method *#completeEvent()* is called again.
-        
-    If the method *#wait()* has called after all events are called:
-        Should not call the callback if all events is not complete.
-        Should not call the callback when last event is completed.
-        Should call the callback if the method *#wait()* is called.
-        Should not call the callback if the method *#completeEvent()* is called again.
-        
-    If the methods *#wait()* and *#dontWait()* are called before all evenrs are called 
-        Should not call the callback if all events is not complete.
-        Should not call the callback when last event is completed.
-        Should not call the callback if the method *#completeEvent()* is called again.
-        
-    #reset()
-        The member *#_events* should be an empty array.
-        The member *#_callback* should be null.
-        The member *#_waitingStarted* should be equal to *true*.
-        
-*/
